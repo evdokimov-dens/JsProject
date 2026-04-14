@@ -20,14 +20,15 @@ const isNumber = function (num) {
 const asking = function () {
   title = prompt("Как называется проект?", "    интЕРнет-магазин");
   screens = prompt("Какие типы экранов нужно разработать?", "Простые, Сложные, Интерактивные");
-  screenPrice = prompt("Сколько будет стоить данная работа?");
 
-  while (!isNumber(screenPrice)) {
+  do {
     screenPrice = prompt("Сколько будет стоить данная работа?");
-  }
+    if (screenPrice === null) screenPrice = "";
+  } while (!isNumber(screenPrice) || screenPrice.trim() === "");
+
+  screenPrice = +screenPrice;
   adaptive = confirm("Нужен ли адаптив на сайте?");
 };
-
 const getAllServicePrices = function () {
   let sum = 0;
 
@@ -38,9 +39,14 @@ const getAllServicePrices = function () {
       service2 = prompt("Какой дополнительный тип услуги нужен?", "Мобильная разработка");
     }
 
-    sum += +prompt("Сколько это будет стоить?", "230");
-  }
+    let sumService;
+    do {
+      sumService = prompt("Сколько это будет стоить?", "230");
+      if (sumService === null) sumService = "";
+    } while (!isNumber(sumService) || sumService.trim() === "");
 
+    sum += +sumService;
+  }
   return sum;
 };
 
@@ -57,7 +63,7 @@ const getServicePercentPrices = function () {
 };
 
 const getTitle = function () {
-  return title.trim()[0].toLowerCase() + title.trim().substr(1).toLowerCase();
+  return title.trim()[0].toUpperCase() + title.trim().substr(1).toLowerCase();
 };
 
 const getRollbackMessage = function (price) {
