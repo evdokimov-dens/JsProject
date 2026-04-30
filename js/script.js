@@ -7,7 +7,7 @@ const item1 = document.querySelectorAll(".other-items.percent");
 const item2 = document.querySelectorAll(".other-items.number");
 const input = document.querySelector(".rollback input");
 const span = document.querySelector(".rollback span");
-const totalInput = document.getElementsByClassNametEl(".total-input");
+const totalInput = document.getElementsByClassName(".total-input");
 let screen = document.querySelectorAll(".screen");
 console.dir(screen);
 
