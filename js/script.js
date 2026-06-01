@@ -1,7 +1,7 @@
 "use strict";
 
 const title = document.getElementsByTagName("h1")[0];
-const buttonPlus = document.querySelector("screen-btn");
+const buttonPlus = document.querySelector(".screen-btn");
 const otherItemPercent = document.querySelectorAll(".other-items.percent");
 const otherItemNumber = document.querySelectorAll(".other-items.number");
 
@@ -29,25 +29,42 @@ const appData = {
   fullPrice: 0,
   servicePercentPrice: 0,
   services: {},
+  init: function () {
+    appData.addTitle();
+    startBtn.addEventListener("click", appData.start);
+    buttonPlus.addEventListener("click", appData.addScreenBlock);
+  },
+  addTitle: function () {
+    document.title = title.textContent;
+  },
+  start: function () {
+    appData.addScreens();
+    // this.asking();
+    // this.addPrices();
+    // this.getFullPrice();
+    // this.getServicePercentPrices();
+    // this.getTitle();
+    // this.logger();
+  },
+  addScreens: function () {
+    screens = document.querySelectorAll(".screen");
+    screens.forEach(function (screen, index) {
+      const select = screen.querySelector("select");
+      const input = screen.querySelector("input");
+      const selectName = select.options[select.selectedIndex].textContent;
+      appData.screens.push({
+        id: index,
+        name: selectName,
+        price: +select.value * +input.value,
+      });
+    });
+    console.log(appData.screens);
+  },
+  addScreenBlock: function () {
+    const cloneScreen = screens[0].cloneNode(true);
+    screens[screens.length - 1].after(cloneScreen);
+  },
   asking: function () {
-    do {
-      this.title = prompt("Как называется проект?", "    интЕРнет-магазин");
-    } while (!this.isString(this.title));
-
-    let name;
-    for (let i = 0; i < 2; i++) {
-      do {
-        name = prompt("Какие типы экранов нужно разработать?");
-      } while (!this.isString(name));
-      let price = 0;
-
-      do {
-        price = prompt("Сколько будет стоить данная работа?");
-      } while (!this.isNumber(price));
-
-      this.screens.push({ id: i, name: name, price: price });
-    }
-
     for (let i = 0; i < 2; i++) {
       do {
         name = prompt("Какой дополнительный тип услуги нужен?");
@@ -60,8 +77,6 @@ const appData = {
 
       this.services[name + "_" + i] = +price;
     }
-
-    this.adaptive = confirm("Нужен ли адаптив на сайте?");
   },
 
   addPrices: function () {
@@ -72,9 +87,6 @@ const appData = {
     for (let key in this.services) {
       this.allServicePrices += this.services[key];
     }
-  },
-  isNumber: function (num) {
-    return !isNaN(parseFloat(num)) && isFinite(num);
   },
   isString: function (str) {
     return isNaN(str) && str !== parseFloat(str);
@@ -99,14 +111,6 @@ const appData = {
       return "Что-то пошло не так";
     }
   },
-  start: function () {
-    this.asking();
-    this.addPrices();
-    this.getFullPrice();
-    this.getServicePercentPrices();
-    this.getTitle();
-    this.logger();
-  },
   logger: function () {
     for (let key in this) {
       console.log(key + ": " + this[key]);
@@ -115,4 +119,4 @@ const appData = {
   },
 };
 
-// appData.start();
+appData.init();
